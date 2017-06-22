@@ -1,6 +1,12 @@
 package linearRegression;
 
-
+/**
+ * 梯度下降算法
+ * 批量梯度下降
+ * 随机梯度下降
+ * @author chehuizi
+ *
+ */
 public class GradientDescent {
 	
 	/**
