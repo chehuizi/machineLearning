@@ -65,9 +65,9 @@ public class GradientDescent {
 	 * @param deviation : 误差
 	 * @param step : 步长
 	 */
-	public static void batchGD(int paramSize, double[][] input, double[] output, double deviation, double step) {
+	public static void batchGD(double[][] input, double[] output, double deviation, double step) {
+		int paramSize = input[0].length;
 		double[] params = new double[paramSize];
-		double b = 0;
 		for (int i=0; i<paramSize; i++) {
 			params[i] = 0;
 		}
@@ -81,32 +81,22 @@ public class GradientDescent {
 				double y = output[i];
 				
 				double h = 0;
-				h += 1 * b;
 				for (int j=0; j<input[i].length; j++) {
 					h += params[j] * input[i][j];
 				}
+				
 				dd += (h - y) * (h - y);
 			}
 			dd = 1.0/2.0 * 1/input.length * dd;
 			if (dd > deviation) {
 				double temp = 0;
-				for (int i=0; i<input.length; i++) {
-					double sum = 0;
-					for (int j=0; j<input[i].length; j++) {
-						sum += params[j] * input[i][j];
-					}
-					temp += (b + sum - output[i]) * 1;
-				}
-				b = b - step * 1/input.length * temp;
-				
 				for (int m=0; m<params.length; m++) {
-					temp = 0;
 					for (int i=0; i<input.length; i++) {
 						double sum = 0;
 						for (int j=0; j<input[i].length; j++) {
 							sum += params[j] * input[i][j];
 						}
-						temp += (b + sum - output[i]) * input[i][m];
+						temp += (sum - output[i]) * input[i][m];
 					}
 					params[m] = params[m] - step * 1/input.length * temp;
 				}
@@ -116,7 +106,7 @@ public class GradientDescent {
 			for (int i=0; i<params.length; i++) {
 				sb.append("params[" + i + "]=" + params[i] + ", ");
 			}
-			System.out.println(sb.toString() + "b=" + b + ", dd=" + dd + ", times=" + times);
+			System.out.println(sb.toString() + "dd=" + dd + ", times=" + times);
 		} while (dd > deviation);
 	}
 	
