@@ -27,7 +27,10 @@ public class LinearModel extends BaseModel {
 	 * 步长
 	 */
 	private double step;
-	
+	/**
+	 * 计算次数
+	 */
+	private int times;
 	
 	public double[][] getInput() {
 		return input;
@@ -60,16 +63,27 @@ public class LinearModel extends BaseModel {
 		this.step = step;
 	}
 	
+	public int getTimes() {
+		return times;
+	}
+	public void setTimes(int times) {
+		this.times = times;
+	}
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		
 		if (params.length > 1) {
-			sb.append(params[0]);
+			sb.append("linear model : \r\n");
+			sb.append("model : " + params[0]);
 			for (int i=1; i<params.length; i++) {
-				sb.append("+" + params[i] + "*x" + i);
+				sb.append(" + " + params[i] + "*x" + i);
 			}
 		}
+		sb.append("\r\n");
+		sb.append("times : " + times);
+		sb.append("\r\n");
+		sb.append("deviation : " + deviation);
 		
 		return sb.toString();
 	}

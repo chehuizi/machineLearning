@@ -77,46 +77,61 @@ public class GradientDescent {
 		double[] output = linearModel.getOutput(); 
 		double deviation = linearModel.getDeviation(); 
 		double step = linearModel.getStep();
+		
 		int paramSize = input[0].length;
 		double[] params = new double[paramSize];
-		for (int i=0; i<paramSize; i++) {
-			params[i] = 0;
-		}
+		initParams(params);
 		
 		double dd = 0;
-		int times = 0;
 		do {
-			times++;
-			dd = 0;
-			for (int i=0; i<input.length; i++) {
-				double y = output[i];
-				
-				double h = 0;
-				for (int j=0; j<input[i].length; j++) {
-					h += params[j] * input[i][j];
-				}
-				
-				dd += (h - y) * (h - y);
-			}
-			dd = 1.0/2.0 * 1/input.length * dd;
+			linearModel.setTimes(linearModel.getTimes() + 1);;
+			dd = calcCost(input, output, params);
+			
 			if (dd > deviation) {
-				double temp = 0;
-				for (int m=0; m<params.length; m++) {
-					for (int i=0; i<input.length; i++) {
-						double sum = 0;
-						for (int j=0; j<input[i].length; j++) {
-							sum += params[j] * input[i][j];
-						}
-						temp += (sum - output[i]) * input[i][m];
-					}
-					params[m] = params[m] - step * 1/input.length * temp;
-				}
+				resetParams(input, output, params, step);
 			}
 		} while (dd > deviation);
 		
+		linearModel.setDeviation(dd);
 		linearModel.setParams(params);
 		
 		logger.info(linearModel.toString());
+	}
+	
+	private void initParams(double[] params) {
+		for (int i=0; i<params.length; i++) {
+			params[i] = 0;
+		}
+	}
+	
+	private double calcCost(double[][] input, double[] output, double[] params) {
+		double dd = 0;
+		for (int i=0; i<input.length; i++) {
+			double y = output[i];
+			
+			double h = 0;
+			for (int j=0; j<input[i].length; j++) {
+				h += params[j] * input[i][j];
+			}
+			
+			dd += (h - y) * (h - y);
+		}
+		dd = 1.0/2.0 * 1/input.length * dd;
+		return dd;
+	}
+	
+	private void resetParams(double[][] input, double[] output, double[] params, double step) {
+		double temp = 0;
+		for (int m=0; m<params.length; m++) {
+			for (int i=0; i<input.length; i++) {
+				double sum = 0;
+				for (int j=0; j<input[i].length; j++) {
+					sum += params[j] * input[i][j];
+				}
+				temp += (sum - output[i]) * input[i][m];
+			}
+			params[m] = params[m] - step * 1/input.length * temp;
+		}
 	}
 	
 	/**
