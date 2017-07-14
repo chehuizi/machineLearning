@@ -1,5 +1,10 @@
 package linearRegression;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import linearRegression.model.LinearModel;
+
 /**
  * 梯度下降算法
  * 批量梯度下降
@@ -9,6 +14,9 @@ package linearRegression;
  */
 public class GradientDescent {
 	
+	private static final Logger logger = LogManager.getLogger(GradientDescent.class);
+	
+	private LinearModel linearModel;
 	/**
 	 * h(x) = m0 + m1*x1
 	 * 步长: 0.5
@@ -51,21 +59,24 @@ public class GradientDescent {
 	
 	/**
 	 * 假设函数：p(x)=p0+p1*x1+p2*x2+p3*x3+···+pn*xn
-	 * 输入：{{x11,x12,x13,···,x1n}, 
-	 * 		 {x21,x22,x23,···,x2n}, 
-	 * 		 {x31,x32,x33,···,x3n}, 
+	 * 输入：{{1,x11,x12,x13,···,x1n}, 
+	 * 		 {1,x21,x22,x23,···,x2n}, 
+	 * 		 {1,x31,x32,x33,···,x3n}, 
 	 * 		 ··· , 
-	 * 		 {xn1,xn2,xn3,···,xnn}}
+	 * 		 {1,xn1,xn2,xn3,···,xnn}}
 	 * 输出：{y1,y2,y3,···,yn}
 	 * 批量梯度下降算法
 	 * 
-	 * @param paramSize : 参数个数
 	 * @param input : 输入
 	 * @param output : 输出
 	 * @param deviation : 误差
 	 * @param step : 步长
 	 */
-	public static void batchGD(double[][] input, double[] output, double deviation, double step) {
+	public void batchGD() {
+		double[][] input = linearModel.getInput(); 
+		double[] output = linearModel.getOutput(); 
+		double deviation = linearModel.getDeviation(); 
+		double step = linearModel.getStep();
 		int paramSize = input[0].length;
 		double[] params = new double[paramSize];
 		for (int i=0; i<paramSize; i++) {
@@ -101,13 +112,11 @@ public class GradientDescent {
 					params[m] = params[m] - step * 1/input.length * temp;
 				}
 			}
-			
-			StringBuffer sb = new StringBuffer();
-			for (int i=0; i<params.length; i++) {
-				sb.append("params[" + i + "]=" + params[i] + ", ");
-			}
-			System.out.println(sb.toString() + "dd=" + dd + ", times=" + times);
 		} while (dd > deviation);
+		
+		linearModel.setParams(params);
+		
+		logger.info(linearModel.toString());
 	}
 	
 	/**
@@ -125,7 +134,7 @@ public class GradientDescent {
 	 * @param output : 输出
 	 * @param step : 步长
 	 */
-	public static void stochasticGD(int paramSize, double[][] input, double[] output, double step) {
+	public void stochasticGD(int paramSize, double[][] input, double[] output, double step) {
 		double[] params = new double[paramSize];
 		double b = 0;
 		for (int i=0; i<paramSize; i++) {
@@ -172,6 +181,14 @@ public class GradientDescent {
 			}
 			System.out.println(sb.toString() + "b=" + b + ", dd=" + dd + ", times=" + times);
 		}
+	}
+
+	public LinearModel getLinearModel() {
+		return linearModel;
+	}
+
+	public void setLinearModel(LinearModel linearModel) {
+		this.linearModel = linearModel;
 	}
 	
 }

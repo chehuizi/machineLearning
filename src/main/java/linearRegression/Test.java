@@ -1,5 +1,7 @@
 package linearRegression;
 
+import linearRegression.model.LinearModel;
+
 public class Test {
 	public static void main(String args[]) {
 		double[][] arrX = {{1,2104,3},
@@ -13,7 +15,14 @@ public class Test {
 		CommonUtils.scale(arrY);
 		CommonUtils.print(arrY);
 		try {
-			GradientDescent.batchGD(arrX, arrY, 0.1, 0.05);
+			GradientDescent gd = new GradientDescent();
+			LinearModel lm = new LinearModel();
+			lm.setInput(arrX);
+			lm.setOutput(arrY);
+			lm.setDeviation(0.1);
+			lm.setStep(0.05);
+			gd.setLinearModel(lm);
+			gd.batchGD();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
