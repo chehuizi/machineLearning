@@ -3,7 +3,7 @@ package linearRegression;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import linearRegression.handle.VerifyHandler;
+import handler.VerifyHandler;
 import linearRegression.model.LinearModel;
 
 /**

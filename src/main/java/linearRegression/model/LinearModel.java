@@ -3,8 +3,8 @@ package linearRegression.model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import linearRegression.handle.ScaleHandler;
-import linearRegression.handle.VerifyHandler;
+import handler.ScaleHandler;
+import handler.VerifyHandler;
 
 public class LinearModel extends BaseModel implements ScaleHandler, VerifyHandler {
 	

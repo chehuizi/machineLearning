@@ -1,4 +1,4 @@
-package linearRegression.handle;
+package handler;
 
 public interface VerifyHandler {
 	/**
