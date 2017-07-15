@@ -9,20 +9,18 @@ public class Test {
 				{1,2400,3},
 				{1,1416,2},
 				{1,3000,4}};
-		CommonUtils.scale(arrX);
-		CommonUtils.print(arrX);
 		double[] arrY = {400,330,369,232,540};
-		CommonUtils.scale(arrY);
-		CommonUtils.print(arrY);
 		try {
 			GradientDescent gd = new GradientDescent();
 			LinearModel lm = new LinearModel();
 			lm.setInput(arrX);
 			lm.setOutput(arrY);
-			lm.setDeviation(0.1);
-			lm.setStep(0.05);
+			lm.setDeviation(0.0145);
+			lm.setStep(0.1);
 			gd.setLinearModel(lm);
+			lm.scale();
 			gd.batchGD();
+			gd.verify();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}

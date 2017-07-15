@@ -3,6 +3,7 @@ package linearRegression;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import linearRegression.handle.VerifyHandler;
 import linearRegression.model.LinearModel;
 
 /**
@@ -12,7 +13,7 @@ import linearRegression.model.LinearModel;
  * @author chehuizi
  *
  */
-public class GradientDescent {
+public class GradientDescent implements VerifyHandler {
 	
 	private static final Logger logger = LogManager.getLogger(GradientDescent.class);
 	
@@ -81,6 +82,7 @@ public class GradientDescent {
 		int paramSize = input[0].length;
 		double[] params = new double[paramSize];
 		initParams(params);
+		linearModel.setParams(params);
 		
 		double dd = 0;
 		do {
@@ -90,10 +92,9 @@ public class GradientDescent {
 			if (dd > deviation) {
 				resetParams(input, output, params, step);
 			}
+			linearModel.setDeviation(dd);
+			logger.info(linearModel.toString());
 		} while (dd > deviation);
-		
-		linearModel.setDeviation(dd);
-		linearModel.setParams(params);
 		
 		logger.info(linearModel.toString());
 	}
@@ -204,6 +205,10 @@ public class GradientDescent {
 
 	public void setLinearModel(LinearModel linearModel) {
 		this.linearModel = linearModel;
+	}
+
+	public void verify() {
+		linearModel.verify();
 	}
 	
 }
