@@ -18,6 +18,16 @@ public class GradientDescent implements VerifyHandler {
 	private static final Logger logger = LogManager.getLogger(GradientDescent.class);
 	
 	private LinearModel linearModel;
+	
+	public GradientDescent() {
+		linearModel = new LinearModel();
+		this.setLinearModel(linearModel);
+	}
+	
+	public GradientDescent(LinearModel linearModel) {
+		this.setLinearModel(linearModel);
+	}
+	
 	/**
 	 * h(x) = m0 + m1*x1
 	 * 步长: 0.5
